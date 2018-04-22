@@ -1,4 +1,4 @@
-### Building from source
+# Building from source
 
 git clone https://github.com/m-starke/dublin-traceroute.git
 
@@ -10,25 +10,29 @@ git clone https://github.com/m-starke/dublin-traceroute.git
 - jsoncpp built from source
 - setcap (see note at the end)
 
-# Additional dependencies if cmake fails
+### Additional dependencies if cmake fails
 - pkg-config if cmake fails on detecting libraries
 - cmake-data
 
 ## Build
+´´´
+cd dublin-traceroute
+mkdir build
+cd build
+cmake ..
+make
+make install
+´´´
 
-- cd dublin-traceroute
-- mkdir build
-- cd build
-- cmake ..
-- make
-- make install (as root)
+Install as root.
 
 ## Options for building
+´´´
+CXX=g++ make
+CXX=clang++ make
+´´´
 
-- CXX=g++ make
-- CXX=clang++ make
-
-# Note
+### Note
 
 Note that if setcap is found when installing, it is used to set the CAP_NET_RAW
 capability on the dublin-traceroute binary. This allows any regular user to run
