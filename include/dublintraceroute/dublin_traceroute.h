@@ -43,7 +43,9 @@ private:
 	const uint16_t		 srcport_,
 				 dstport_;
 	const std::string	 dst_;
-	IPv4Address		 target_;
+  const bool ipv6_;
+	IPv4Address		 target4_;
+  IPv6Address target6_;
 	const uint8_t		 npaths_,
 				 min_ttl_,
 				 max_ttl_;
@@ -51,7 +53,7 @@ private:
 	const bool		 broken_nat_;
 	std::mutex		 mutex_tracerouting,
 				 mutex_sniffed_packets;
-	IPv4Address		 my_address;
+	// IPv4Address		 my_address; // unused
 	std::vector<std::shared_ptr<Packet>>	 sniffed_packets;
 	const void		 validate_arguments();
 
@@ -63,8 +65,11 @@ public:
 	static const uint8_t	 default_max_ttl = 30;
 	static const uint16_t	 default_delay = 10;
 	static const bool	 default_broken_nat = false;
+  static const bool default_ipv6 = false;
+
 	DublinTraceroute(
 			const std::string &dst,
+      const bool is_ipv6 = default_ipv6,
 			const uint16_t srcport = default_srcport,
 			const uint16_t dstport = default_dstport,
 			const uint8_t npaths = default_npaths,
@@ -80,10 +85,13 @@ public:
 				min_ttl_(min_ttl),
 				max_ttl_(max_ttl),
 				delay_(delay),
-				broken_nat_(broken_nat)
+				broken_nat_(broken_nat),
+        ipv6_(is_ipv6)
 	{ validate_arguments(); }
+
 	DublinTraceroute(
 			const char *dst,
+      const bool is_ipv6 = default_ipv6,
 			const uint16_t srcport = default_srcport,
 			const uint16_t dstport = default_dstport,
 			const uint8_t npaths = default_npaths,
@@ -99,9 +107,12 @@ public:
 				min_ttl_(min_ttl),
 				max_ttl_(max_ttl),
 				delay_(delay),
-				broken_nat_(broken_nat)
+				broken_nat_(broken_nat),
+        ipv6_(is_ipv6)
 	{ validate_arguments(); }
+
 	~DublinTraceroute() { std::lock_guard<std::mutex> lock(mutex_tracerouting); };
+
 	DublinTraceroute(const DublinTraceroute& source):
 		srcport_(source.srcport_),
 		dstport_(source.dstport_),
@@ -110,7 +121,8 @@ public:
 		min_ttl_(source.min_ttl_),
 		max_ttl_(source.max_ttl_),
 		delay_(source.delay_),
-		broken_nat_(source.broken_nat_)
+		broken_nat_(source.broken_nat_),
+    ipv6_(source.ipv6_)
 	{ validate_arguments(); }
 
 	inline const uint16_t srcport() const { return srcport_; }
@@ -120,9 +132,15 @@ public:
 	inline const uint8_t max_ttl() const { return max_ttl_; }
 	inline const uint16_t delay() const { return delay_; }
 	inline const bool broken_nat() const { return broken_nat_; }
+  inline const bool is_ipv6() const { return ipv6_; }
 	inline const std::string &dst() const { return dst_; }
-	inline const IPv4Address &target() const { return target_; }
-	void target(const IPv4Address &addr) { target_ = addr; }
+
+	inline const IPv4Address &target4() const { return target4_; }
+	void target4(const IPv4Address &addr) { target4_ = addr; }
+
+  inline const IPv6Address &target6() const { return target6_; }
+	void target6(const IPv6Address &addr) { target6_ = addr; }
+
 	std::shared_ptr<TracerouteResults> traceroute();
 
 private:
@@ -132,4 +150,3 @@ private:
 };
 
 #endif /* _Dublin_TRACEROUTE_H */
-

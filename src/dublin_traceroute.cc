@@ -114,9 +114,9 @@ std::shared_ptr<TracerouteResults> DublinTraceroute::traceroute() {
 
 	// Resolve the target host
 	try {
-		target(Utils::resolve_domain(dst()));
+		target4(Utils::resolve_domain(dst()));
 	} catch (std::runtime_error) {
-		target(IPv4Address(dst()));
+		target4(IPv4Address(dst()));
 	}
 
 	uint16_t num_packets = (max_ttl() - min_ttl() + 1) * npaths();
@@ -211,7 +211,7 @@ std::shared_ptr<TracerouteResults> DublinTraceroute::traceroute() {
 		 	 * Adjust the payload for each flow to obtain the same UDP
 		 	 * checksum. The UDP checksum is used to identify the flow.
 		 	 */
-			UDPv4Probe probe(target(), dport, srcport(), ttl);
+			UDPv4Probe probe(target4(), dport, srcport(), ttl);
 			auto packet = probe.send();
 			auto now = Tins::Timestamp::current_time();
 
@@ -266,5 +266,3 @@ void DublinTraceroute::match_hostnames(TracerouteResults &results, std::shared_p
 		}
 	}
 }
-
-

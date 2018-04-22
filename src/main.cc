@@ -73,6 +73,7 @@ Additional features in the Python module at https://github.com/insomniacslk/pyth
 
 int
 main(int argc, char **argv) {
+
 	std::string	target;
 	long	sport = DublinTraceroute::default_srcport;
 	long	dport = DublinTraceroute::default_dstport;
@@ -81,6 +82,7 @@ main(int argc, char **argv) {
 	long	max_ttl = DublinTraceroute::default_max_ttl;
 	long	delay = DublinTraceroute::default_delay;
 	bool	broken_nat = DublinTraceroute::default_broken_nat;
+  bool is_ipv6 = DublinTraceroute::default_ipv6;
 	std::string	output_file = DEFAULT_OUTPUT_FILE;
 
 	if (geteuid() == 0) {
@@ -152,7 +154,7 @@ main(int argc, char **argv) {
 		std::cerr << "Source port must be between 1 and 65535" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
-	
+
 	if (dport < 1 || dport > 65535) {
 		std::cerr << "Destination port must be between 1 and 65535" << std::endl;
 		std::exit(EXIT_FAILURE);
@@ -186,6 +188,7 @@ main(int argc, char **argv) {
 
 	DublinTraceroute Dublin(
 			target,
+      is_ipv6,
 			sport,
 			dport,
 			npaths,
@@ -229,4 +232,3 @@ main(int argc, char **argv) {
 
 	std::exit(EXIT_SUCCESS);
 }
-

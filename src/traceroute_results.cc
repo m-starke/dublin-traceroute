@@ -17,6 +17,8 @@
 #include <random>
 #include <future>
 
+#include <json/json.h>
+
 #include "dublintraceroute/traceroute_results.h"
 #include "dublintraceroute/icmp_messages.h"
 
@@ -131,7 +133,7 @@ void TracerouteResults::show(std::ostream &stream) {
 				// print the response IP ID, useful to detect
 				// loops due to NATs, fake hops, etc
 				stream << ", IP ID: " << hop.received()->id();
-				
+
 				// print the RTT
 				std::stringstream rttss;
 				rttss << (hop.rtt() / 1000) << "." << (hop.rtt() % 1000) << " ms ";
