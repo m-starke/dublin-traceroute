@@ -1,6 +1,8 @@
 # Building from source
 
+```shell
 git clone https://github.com/m-starke/dublin-traceroute.git
+```
 
 ## Dependencies / Requirements
 
@@ -15,22 +17,23 @@ git clone https://github.com/m-starke/dublin-traceroute.git
 - cmake-data
 
 ## Build
-´´´
+
+```shell
 cd dublin-traceroute
 mkdir build
 cd build
 cmake ..
 make
 make install
-´´´
+```
 
 Install as root.
 
 ## Options for building
-´´´
+```shell
 CXX=g++ make
 CXX=clang++ make
-´´´
+```
 
 ### Note
 
