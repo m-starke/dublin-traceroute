@@ -2,3 +2,5 @@
 .*.swp
 *.so
 *.dylib
+/build
+
